@@ -6,75 +6,226 @@
   <title>Main Page - Buurtteamassistent</title>
   <link rel="icon" type="image/x-icon" href="/Buut-logo.ico">
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    /* Wachtwoord-container */
+    #password-container {
+      display: none; /* Wordt later getoond als de gebruiker NIET geautoriseerd is */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+    }
+    #password-container h2 {
+      margin-bottom: 20px;
+    }
+    #password-container input[type="password"] {
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      text-align: center;
+      width: 220px;
+    }
+    #password-container button {
+      padding: 10px;
+      background-color: #ec0101;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 240px;
+    }
+    #password-container #error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    /* Dit is de rest van jouw site, verbergen we standaard tot wachtwoord geaccepteerd is */
+    #protected-content {
+      display: none; /* verschijnt pas als wachtwoord correct is */
+    }
+
+    /* Stijlen voor jouw bestaande layout */
+    .header {
+      background-color: #fff;
+      padding: 10px;
+      text-align: left;
+    }
+    .header img {
+      max-width: 200px;
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+    }
+    .button {
+      background-color: #ec0101;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 999; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      max-width: 800px;
+      position: relative;
+      border-radius: 8px;
+    }
+    .close-button {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .modal-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Header with Logo -->
-  <div class="header">
-    <a href="index.html">
-      <img src="/buurtteam.png" alt="Buurtteamassistent Logo">
-    </a>
+  <!-- Wachtwoord-invoercontainer -->
+  <div id="password-container">
+    <h2>Voer wachtwoord in</h2>
+    <input type="password" id="pwd" placeholder="Wachtwoord">
+    <button onclick="checkPassword()">Inloggen</button>
+    <p id="error"></p>
   </div>
 
-  <!-- Buttons -->
-  <div class="button-container">
-    <a href="Elearning.html" class="button">E-Learning VEOA</a>
-    <button id="openKennisbank" class="button">Buurteamassistent</button>
-  </div>
-
-  <!-- Modal -->
-  <div id="kennisbankModal" class="modal">
-    <div class="modal-content">
-      <button class="close-button" id="closeKennisbank">&times;</button>
-      <iframe id="voiceflowIframe" class="modal-iframe" title="Kennisbank Voiceflow Agent"></iframe>
+  <!-- Jouw beschermd deel: alleen zichtbaar als het juiste wachtwoord is ingevoerd -->
+  <div id="protected-content">
+    <!-- Header with Logo -->
+    <div class="header">
+      <a href="index.html">
+        <img src="/buurtteam.png" alt="Buurtteamassistent Logo">
+      </a>
     </div>
-  </div>
 
-  <script>
-    // Get elements
-    const modal = document.getElementById("kennisbankModal");
-    const openModalBtn = document.getElementById("openKennisbank");
-    const closeBtn = document.getElementById("closeKennisbank");
-    const voiceflowIframe = document.getElementById("voiceflowIframe");
+    <!-- Buttons -->
+    <div class="button-container">
+      <a href="Elearning.html" class="button">E-Learning VEOA</a>
+      <button id="openKennisbank" class="button">Buurteamassistent</button>
+    </div>
 
-    // Voiceflow Agent HTML File URL
-    const voiceflowURL = "voiceflow.html"; // Points to your local voiceflow.html file
+    <!-- Modal -->
+    <div id="kennisbankModal" class="modal">
+      <div class="modal-content">
+        <button class="close-button" id="closeKennisbank">&times;</button>
+        <iframe id="voiceflowIframe" class="modal-iframe" title="Kennisbank Voiceflow Agent"></iframe>
+      </div>
+    </div>
 
-    // Open the modal and load the Voiceflow agent
-    openModalBtn.addEventListener("click", () => {
-      modal.style.display = "block"; // Show modal
-      voiceflowIframe.src = voiceflowURL; // Load voiceflow.html in iframe
-    });
+    <script>
+      // Get elements
+      const modal = document.getElementById("kennisbankModal");
+      const openModalBtn = document.getElementById("openKennisbank");
+      const closeBtn = document.getElementById("closeKennisbank");
+      const voiceflowIframe = document.getElementById("voiceflowIframe");
 
-    // Close the modal and clear the iframe
-    closeBtn.addEventListener("click", () => {
-      modal.style.display = "none"; // Hide modal
-      voiceflowIframe.src = ""; // Unload iframe content
-    });
+      // Voiceflow Agent HTML File URL
+      const voiceflowURL = "voiceflow.html"; // Points to your local voiceflow.html file
 
-    // Close modal when clicking outside the modal content
-    window.addEventListener("click", (event) => {
-      if (event.target === modal) {
+      // Open the modal and load the Voiceflow agent
+      openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block"; // Show modal
+        voiceflowIframe.src = voiceflowURL; // Load voiceflow.html in iframe
+      });
+
+      // Close the modal and clear the iframe
+      closeBtn.addEventListener("click", () => {
         modal.style.display = "none"; // Hide modal
         voiceflowIframe.src = ""; // Unload iframe content
+      });
+
+      // Close modal when clicking outside the modal content
+      window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none"; // Hide modal
+          voiceflowIframe.src = ""; // Unload iframe content
+        }
+      });
+    </script>
+
+    <!-- Voiceflow widget script -->
+    <script type="text/javascript">
+      (function(d, t) {
+          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          v.onload = function() {
+            window.voiceflow.chat.load({
+              verify: { projectID: '675ec3fa4cd2d816d9187212' },
+              url: 'https://general-runtime.voiceflow.com',
+              versionID: 'production'
+            });
+          }
+          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+          v.type = "text/javascript"; 
+          s.parentNode.insertBefore(v, s);
+      })(document, 'script');
+    </script>
+  </div> <!-- EINDE protected-content -->
+
+  <!-- Script voor wachtwoordcontrole -->
+  <script>
+    // Pas hier je gewenste wachtwoord aan
+    const correctPassword = "amsterdammer";
+
+    // Zodra de pagina laadt, check of de gebruiker al geautoriseerd is
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem("authorized") === "true") {
+        // Direct tonen
+        document.getElementById('protected-content').style.display = "block";
+      } else {
+        // Toon inlogscherm
+        document.getElementById('password-container').style.display = "flex";
       }
     });
-  </script>
 
-<script type="text/javascript">
-  (function(d, t) {
-      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-      v.onload = function() {
-        window.voiceflow.chat.load({
-          verify: { projectID: '675ec3fa4cd2d816d9187212' },
-          url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production'
-        });
+    function checkPassword() {
+      const inputVal = document.getElementById('pwd').value;
+      const errorElem = document.getElementById('error');
+      if (inputVal === correctPassword) {
+        localStorage.setItem("authorized", "true");
+        document.getElementById('password-container').style.display = "none";
+        document.getElementById('protected-content').style.display = "block";
+      } else {
+        errorElem.textContent = "Onjuist wachtwoord!";
       }
-      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-  })(document, 'script');
-</script>
-
+    }
+  </script>
 
 </body>
 </html>
