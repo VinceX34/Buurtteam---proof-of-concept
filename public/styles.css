@@ -45,6 +45,8 @@ html, body {
   text-decoration: none;
   text-align: center;
   display: inline-block;
+  box-sizing: border-box;
+  width: 250px; /* Fixed width for buttons */
 }
 
 .button:hover {
