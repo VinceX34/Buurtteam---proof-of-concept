@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Main Page - Buurtteamassistent</title>
+  <link rel="icon" type="image/x-icon" href="/Buut-logo.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header with Logo -->
+  <div class="header">
+    <a href="index.html">
+      <img src="/buurtteam.png" alt="Buurtteamassistent Logo">
+    </a>
+  </div>
+
+  <!-- Buttons -->
+  <div class="button-container">
+    <a href="Elearning.html" class="button">E-Learning VEOA</a>
+    <button id="openKennisbank" class="button">Buurteamassistent</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="kennisbankModal" class="modal">
+    <div class="modal-content">
+      <button class="close-button" id="closeKennisbank">&times;</button>
+      <iframe id="voiceflowIframe" class="modal-iframe" title="Kennisbank Voiceflow Agent"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Get elements
+    const modal = document.getElementById("kennisbankModal");
+    const openModalBtn = document.getElementById("openKennisbank");
+    const closeBtn = document.getElementById("closeKennisbank");
+    const voiceflowIframe = document.getElementById("voiceflowIframe");
+
+    // Voiceflow Agent HTML File URL
+    const voiceflowURL = "voiceflow.html"; // Points to your local voiceflow.html file
+
+    // Open the modal and load the Voiceflow agent
+    openModalBtn.addEventListener("click", () => {
+      modal.style.display = "block"; // Show modal
+      voiceflowIframe.src = voiceflowURL; // Load voiceflow.html in iframe
+    });
+
+    // Close the modal and clear the iframe
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none"; // Hide modal
+      voiceflowIframe.src = ""; // Unload iframe content
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none"; // Hide modal
+        voiceflowIframe.src = ""; // Unload iframe content
+      }
+    });
+  </script>
+
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '675ec3fa4cd2d816d9187212' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+
+
+</body>
+</html>

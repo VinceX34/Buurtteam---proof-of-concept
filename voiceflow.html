@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kennisbank - Voiceflow Agent</title>
+  <style>
+    /* Ensure the content takes full height */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden; /* Prevent scrollbars */
+    }
+
+    #voiceflow-container {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Placeholder for the Voiceflow Agent -->
+  <div id="voiceflow-container"></div>
+
+  <script>
+    // Voiceflow widget loading with new script and project ID
+    (function() {
+      const script = document.createElement('script');
+      script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; // New script URL
+      script.type = "text/javascript";
+
+      script.onload = () => {
+        try {
+          if (window.voiceflow && window.voiceflow.chat) {
+            window.voiceflow.chat.load({
+              verify: { projectID: '676ea8ed0eed0c4b262e34d1' }, // Replace with your project ID
+              url: 'https://general-runtime.voiceflow.com',
+              versionID: 'production',
+              render: {
+                mode: 'embedded',
+                target: document.getElementById('voiceflow-container'),
+              },
+              autostart: true, // Ensures the widget opens automatically
+            });
+          } else {
+            console.error("Voiceflow object or chat module is not available.");
+          }
+        } catch (error) {
+          console.error("Voiceflow widget failed to load:", error);
+        }
+      };
+
+      script.onerror = () => {
+        console.error("Failed to load the Voiceflow script.");
+      };
+
+      document.body.appendChild(script);
+    })();
+  </script>
+</body>
+</html>
