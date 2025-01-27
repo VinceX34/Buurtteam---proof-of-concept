@@ -51,12 +51,12 @@
       margin-top: 10px;
     }
 
-    /* Dit is de rest van jouw site, verbergen we standaard tot wachtwoord geaccepteerd is */
+    /* Verborgen content, alleen zichtbaar na correct wachtwoord */
     #protected-content {
-      display: none; /* verschijnt pas als wachtwoord correct is */
+      display: none;
     }
 
-    /* Stijlen voor jouw bestaande layout */
+    /* Layout-stijlen */
     .header {
       background-color: #fff;
       padding: 10px;
@@ -81,39 +81,6 @@
       font-size: 16px;
       font-family: 'Inter', sans-serif;
     }
-    .modal {
-      display: none; 
-      position: fixed; 
-      z-index: 999; 
-      left: 0; 
-      top: 0; 
-      width: 100%; 
-      height: 100%; 
-      overflow: auto; 
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      max-width: 800px;
-      position: relative;
-      border-radius: 8px;
-    }
-    .close-button {
-      position: absolute;
-      right: 10px;
-      top: 5px;
-      background: transparent;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-    .modal-iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
   </style>
 </head>
 <body>
@@ -126,9 +93,9 @@
     <p id="error"></p>
   </div>
 
-  <!-- Jouw beschermd deel: alleen zichtbaar als het juiste wachtwoord is ingevoerd -->
+  <!-- Beschermd deel: alleen zichtbaar als het wachtwoord correct is -->
   <div id="protected-content">
-    <!-- Header with Logo -->
+    <!-- Header -->
     <div class="header">
       <a href="index.html">
         <img src="/buurtteam.png" alt="Buurtteamassistent Logo">
@@ -138,49 +105,11 @@
     <!-- Buttons -->
     <div class="button-container">
       <a href="Elearning.html" class="button">E-Learning VEOA</a>
-      <button id="openKennisbank" class="button">Buurteamassistent</button>
+      <!-- Rechtstreeks naar voiceflow.html -->
+      <a href="voiceflow.html" class="button">Kennisbank</a>
     </div>
 
-    <!-- Modal -->
-    <div id="kennisbankModal" class="modal">
-      <div class="modal-content">
-        <button class="close-button" id="closeKennisbank">&times;</button>
-        <iframe id="voiceflowIframe" class="modal-iframe" title="Kennisbank Voiceflow Agent"></iframe>
-      </div>
-    </div>
-
-    <script>
-      // Get elements
-      const modal = document.getElementById("kennisbankModal");
-      const openModalBtn = document.getElementById("openKennisbank");
-      const closeBtn = document.getElementById("closeKennisbank");
-      const voiceflowIframe = document.getElementById("voiceflowIframe");
-
-      // Voiceflow Agent HTML File URL
-      const voiceflowURL = "voiceflow.html"; // Points to your local voiceflow.html file
-
-      // Open the modal and load the Voiceflow agent
-      openModalBtn.addEventListener("click", () => {
-        modal.style.display = "block"; // Show modal
-        voiceflowIframe.src = voiceflowURL; // Load voiceflow.html in iframe
-      });
-
-      // Close the modal and clear the iframe
-      closeBtn.addEventListener("click", () => {
-        modal.style.display = "none"; // Hide modal
-        voiceflowIframe.src = ""; // Unload iframe content
-      });
-
-      // Close modal when clicking outside the modal content
-      window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-          modal.style.display = "none"; // Hide modal
-          voiceflowIframe.src = ""; // Unload iframe content
-        }
-      });
-    </script>
-
-    <!-- Voiceflow widget script -->
+    <!-- Voiceflow widget script (optioneel, mocht je het willen behouden) -->
     <script type="text/javascript">
       (function(d, t) {
           var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -196,20 +125,19 @@
           s.parentNode.insertBefore(v, s);
       })(document, 'script');
     </script>
+
   </div> <!-- EINDE protected-content -->
 
-  <!-- Script voor wachtwoordcontrole -->
+  <!-- Wachtwoordcontrole -->
   <script>
-    // Pas hier je gewenste wachtwoord aan
+    // Pas hier het gewenste wachtwoord aan
     const correctPassword = "amsterdammer";
 
-    // Zodra de pagina laadt, check of de gebruiker al geautoriseerd is
+    // Check of de gebruiker al geautoriseerd is
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem("authorized") === "true") {
-        // Direct tonen
         document.getElementById('protected-content').style.display = "block";
       } else {
-        // Toon inlogscherm
         document.getElementById('password-container').style.display = "flex";
       }
     });

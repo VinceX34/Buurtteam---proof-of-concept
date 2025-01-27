@@ -1,6 +1,0 @@
-{
-    "rewrites": [
-        { "source": "/Elearning", "destination": "/Elearning.html" },
-        { "source": "/about", "destination": "/about.html" }
-    ]
-}
