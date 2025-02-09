@@ -88,7 +88,7 @@
   <!-- Wachtwoord-invoercontainer -->
   <div id="password-container">
     <h2>Voer wachtwoord in</h2>
-    <input type="password" id="pwd" placeholder="Wachtwoord">
+    <input type="password" id="pwd" placeholder="Typ hier het wachtwoord">
     <button onclick="checkPassword()">Inloggen</button>
     <p id="error"></p>
   </div>
@@ -104,12 +104,11 @@
 
     <!-- Buttons -->
     <div class="button-container">
-      <a href="Elearning.html" class="button">E-Learning VEOA</a>
+      <a href="Elearning.html" class="button">Kennisbank VEOA</a>
       <!-- Rechtstreeks naar voiceflow.html -->
-      <a href="kennisbank.html" class="button">Kennisbank</a>
+      <a href="kennisbank.html" class="button">Help mij met ...</a>
     </div>
 
-    <!-- Voiceflow widget script (optioneel, mocht je het willen behouden) -->
     <script type="text/javascript">
       (function(d, t) {
           var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -118,9 +117,18 @@
               verify: { projectID: '675ec3fa4cd2d816d9187212' },
               url: 'https://general-runtime.voiceflow.com',
               versionID: 'production'
+            }).then(() => {
+              window.voiceflow.chat.proactive.clear(); // clear all previous messages
+              window.voiceflow.chat.proactive.push({ 
+                type: 'text', 
+                payload: { message: 'Stel je vraag! Ik denk met je mee en indien nodig maak ik een afspraak voor je bij het Buurtteam.' }
+              }, { 
+                type: 'text', 
+                payload: { message: 'Druk op de knop hieronder!' }
+              });
             });
-          }
-          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+          };
+          v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; 
           v.type = "text/javascript"; 
           s.parentNode.insertBefore(v, s);
       })(document, 'script');
